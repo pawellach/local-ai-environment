@@ -1,0 +1,57 @@
+# Generated log files
+logs/*.log
+logs/**/*.log
+
+# Generated reports (JSON and MD are runtime output, not source)
+reports/*.json
+reports/*.md
+
+# Temp and backup files
+*.tmp
+*.bak
+*.swp
+
+# Ollama model files (large binary data)
+*.gguf
+models/
+model-cache/
+
+# Python virtual environments and cache
+venv/
+env/
+.venv/
+.env/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+
+# Secrets and credentials — NEVER commit these
+.env
+*.env
+secrets/
+*.secret.*
+*_secret.*
+*.key
+*.pem
+*.pfx
+
+# Downloaded installers (keep in a temp folder, not tracked)
+temp/
+*.exe
+*.msi
+
+# OS noise
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor noise
+.vscode/
+.idea/
+*.suo
+*.user
