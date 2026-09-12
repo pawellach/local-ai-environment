@@ -50,10 +50,11 @@ function Test-HttpEndpoint {
         $result.Success    = $true
         $result.StatusCode = 200
         $result.Body       = $response
-    } catch [System.Net.WebException] {
-        $result.StatusCode = [int]$_.Exception.Response.StatusCode
-        $result.Error      = $_.Exception.Message
     } catch {
+        # Compatible with PS 5.1 (System.Net.WebException) and PS 7+ (HttpRequestException / HttpResponseException)
+        if ($null -ne $_.Exception.Response) {
+            $result.StatusCode = [int]$_.Exception.Response.StatusCode
+        }
         $result.Error = $_.Exception.Message
     }
 
