@@ -170,7 +170,10 @@ try {
             Model      = $selectedTag
             Passed     = $testPassed
             ElapsedMs  = $elapsedMs
-            Output     = ($testResult -join "`n") | Select-Object -First 500
+            Output     = (& {
+                $s = $testResult -join "`n"
+                if ($s.Length -gt 500) { $s.Substring(0, 500) } else { $s }
+            })
             RunAt      = (Get-Date -Format "o")
         }
         if (-not (Test-Path $OutputPath)) { New-Item -ItemType Directory -Path $OutputPath -Force | Out-Null }
