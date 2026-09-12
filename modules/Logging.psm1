@@ -6,7 +6,7 @@ $script:LogStartTime = $null
 function Initialize-Log {
     <#
     .SYNOPSIS
-        Creates a new log file for the current script run and sets $Global:LogFile.
+        Creates a new log file for the current script run and returns the path.
     .PARAMETER ScriptName
         Name of the calling script (used in log header and filename).
     .PARAMETER LogDir
@@ -28,7 +28,7 @@ function Initialize-Log {
     $logFile = Join-Path (Resolve-Path $LogDir) "$($ScriptName)_$timestamp.log"
 
     $script:LogStartTime = Get-Date
-    $Global:LogFile = $logFile
+    $script:LogFile = $logFile
 
     $header = @(
         "=" * 72
@@ -53,14 +53,14 @@ function Write-Log {
     .PARAMETER Level
         INFO | WARNING | ERROR | SUCCESS | DEBUG
     .PARAMETER LogFile
-        Path to the log file. Defaults to $Global:LogFile.
+        Path to the log file. Defaults to $script:LogFile (module-scoped).
     #>
     [CmdletBinding()]
     param(
         [Parameter(Mandatory)][string]$Message,
         [ValidateSet("INFO", "WARNING", "ERROR", "SUCCESS", "DEBUG")]
         [string]$Level = "INFO",
-        [string]$LogFile = $Global:LogFile
+        [string]$LogFile = $script:LogFile
     )
 
     $colors = @{
@@ -86,11 +86,11 @@ function Close-Log {
     .SYNOPSIS
         Writes a footer line with elapsed time to the log file.
     .PARAMETER LogFile
-        Path to the log file. Defaults to $Global:LogFile.
+        Path to the log file. Defaults to $script:LogFile (module-scoped).
     #>
     [CmdletBinding()]
     param(
-        [string]$LogFile = $Global:LogFile
+        [string]$LogFile = $script:LogFile
     )
 
     $elapsed = if ($script:LogStartTime) {
