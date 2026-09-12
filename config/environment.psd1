@@ -14,9 +14,12 @@
     OpenWebUIStartCmd = "open-webui serve"
 
     # Ollama configuration
-    OllamaPort      = 11434
-    OllamaHost      = "localhost"
-    OllamaApiUrl    = "http://localhost:11434"
+    OllamaPort          = 11434
+    OllamaHost          = "localhost"
+    OllamaApiUrl        = "http://localhost:11434"
+    # Check https://ollama.com/download before each release — URL may change
+    OllamaInstallerUrl  = "https://ollama.com/download/OllamaSetup.exe"
+    OllamaWinGetId      = "Ollama.Ollama"
 
     # Python runtime requirements
     MinPythonVersion = "3.11"

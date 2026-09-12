@@ -30,12 +30,15 @@ $ErrorActionPreference = 'Stop'
 $ProjectRoot  = Split-Path -Parent $PSScriptRoot
 $OutputPath   = Join-Path $ProjectRoot "reports"
 $OllamaApiUrl = "http://localhost:11434"
-$InstallerUrl = "https://ollama.ai/download/OllamaSetup.exe"
 
 Import-Module "$ProjectRoot\modules\Logging.psm1"       -Force
 Import-Module "$ProjectRoot\modules\System.psm1"        -Force
 Import-Module "$ProjectRoot\modules\Validation.psm1"    -Force
 Import-Module "$ProjectRoot\modules\Configuration.psm1" -Force
+
+$envCfg       = Import-PowerShellDataFile "$ProjectRoot\config\environment.psd1"
+$InstallerUrl = $envCfg.OllamaInstallerUrl
+$OllamaWinGetId = $envCfg.OllamaWinGetId
 
 $logFile = Initialize-Log -ScriptName "04-Install-Ollama" -LogDir (Join-Path $ProjectRoot "logs")
 
@@ -60,7 +63,7 @@ try {
                 Write-Log "Attempting installation via winget..." -Level INFO
                 Write-Host "  Trying winget install..." -ForegroundColor DarkGray
                 try {
-                    $wingetResult = & winget install --id Ollama.Ollama --silent `
+                    $wingetResult = & winget install --id $OllamaWinGetId --silent `
                         --accept-package-agreements --accept-source-agreements 2>&1
                     if ($LASTEXITCODE -eq 0) {
                         $installedViaWinget = $true
