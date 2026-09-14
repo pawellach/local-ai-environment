@@ -61,12 +61,12 @@
 
     High = @(
         @{
-            Name              = "Llama3.1 8B"
-            OllamaTag         = "llama3.1:8b"
-            ApproximateSizeGB = 4.9
+            Name              = "Llama3.2 8B"
+            OllamaTag         = "llama3.2:8b"
+            ApproximateSizeGB = 5.0
             MinRAMGB          = 16
             MinVRAMGB         = 8
-            Description       = "Meta Llama 3.1 — strong general-purpose model"
+            Description       = "Meta Llama 3.2 — improved reasoning and instruction following over 3.1"
         }
         @{
             Name              = "Qwen2.5 14B"
