@@ -96,6 +96,15 @@ See `docs/` for detailed guides:
 - [ROADMAP.md](docs/ROADMAP.md) — planned future phases
 - [DOCKER-N8N-PLAN.md](docs/DOCKER-N8N-PLAN.md) — n8n integration architecture
 
+## Related
+
+This project is documented as part of a hands-on article series on building a local AI stack:
+
+- **Substack (PL):** [pawellach.substack.com](https://pawellach.substack.com) — *Lokalne środowisko AI* series
+- **Medium (EN):** [medium.com/@pawellach](https://medium.com/@pawellach) — *Local AI Infrastructure* series
+
+The series covers Ollama setup, Open-WebUI configuration, RAG pipelines, and MCP server integration — all with this repository as the reference implementation.
+
 ## License
 
 MIT. Private use only — no warranty.

@@ -62,7 +62,7 @@ If you see `Restricted`, run the command above and try again. You do not need Ad
 ### Option A: Git Clone
 
 ```powershell
-git clone <your-repo-url> C:\Local-AI-Environment
+git clone https://github.com/pawellach/local-ai-environment.git C:\Local-AI-Environment
 cd C:\Local-AI-Environment
 ```
 
