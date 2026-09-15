@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>local-ai-environment</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:      #0D0F12;
+    --surface: #161A20;
+    --accent:  #4FFFB0;
+    --text:    #E8EAF0;
+    --muted:   #6B7280;
+    --border:  #232830;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  .container { max-width: 760px; margin: 0 auto; padding: 0 24px; }
+
+  nav {
+    border-bottom: 1px solid var(--border);
+    padding: 18px 0;
+  }
+  nav .container { display: flex; justify-content: space-between; align-items: center; }
+  .nav-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; color: var(--accent); font-weight: 500; }
+  .nav-links { display: flex; gap: 24px; }
+  .nav-links a { color: var(--muted); font-size: 14px; }
+
+  .hero { padding: 80px 0 60px; border-bottom: 1px solid var(--border); }
+  .hero-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; color: var(--accent);
+    letter-spacing: 1px; text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  h1 { font-size: clamp(26px, 5vw, 40px); font-weight: 600; line-height: 1.2; margin-bottom: 20px; }
+  .hero-sub { font-size: 18px; color: var(--muted); max-width: 560px; margin-bottom: 36px; }
+  .cta-group { display: flex; gap: 12px; flex-wrap: wrap; }
+  .btn-primary {
+    background: var(--accent); color: #0D0F12;
+    font-weight: 600; padding: 10px 22px; border-radius: 6px; font-size: 14px;
+  }
+  .btn-secondary {
+    background: transparent; color: var(--text);
+    border: 1px solid var(--border); padding: 10px 22px; border-radius: 6px; font-size: 14px;
+  }
+
+  /* Stack diagram */
+  .stack-section { padding: 60px 0; border-bottom: 1px solid var(--border); }
+  .section-label {
+    font-size: 11px; font-weight: 600;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 32px;
+  }
+  .terminal {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px 24px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    line-height: 1.8;
+    overflow-x: auto;
+  }
+  .terminal .comment { color: var(--muted); }
+  .terminal .hi { color: var(--accent); }
+  .terminal .dim { color: #4B5563; }
+  .terminal .ok { color: #a8d8a8; }
+
+  /* Phase cards */
+  .phases { padding: 60px 0; border-bottom: 1px solid var(--border); }
+  .phases h2 { font-size: 22px; margin-bottom: 28px; }
+  .phase-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+  .phase-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px; padding: 24px;
+    position: relative;
+  }
+  .phase-card.done { border-color: rgba(79,255,176,0.3); }
+  .phase-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; font-weight: 600;
+    padding: 3px 8px; border-radius: 4px;
+    margin-bottom: 14px; display: inline-block;
+  }
+  .badge-done { background: rgba(79,255,176,0.15); color: var(--accent); }
+  .badge-next { background: rgba(107,114,128,0.15); color: var(--muted); }
+  .phase-card h3 { font-size: 15px; margin-bottom: 10px; }
+  .phase-card ul { list-style: none; }
+  .phase-card li { font-size: 14px; color: var(--muted); padding: 3px 0; }
+  .phase-card li::before { content: "→ "; color: var(--accent); }
+
+  /* Scripts */
+  .scripts { padding: 60px 0; border-bottom: 1px solid var(--border); }
+  .scripts h2 { font-size: 22px; margin-bottom: 24px; }
+  .script-list { display: flex; flex-direction: column; gap: 12px; }
+  .script-row { display: flex; gap: 16px; align-items: flex-start; }
+  .script-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px; color: var(--accent);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 4px 10px; border-radius: 4px;
+    white-space: nowrap; flex-shrink: 0;
+  }
+  .script-desc { font-size: 14px; color: var(--muted); padding-top: 4px; }
+
+  /* Quickstart */
+  .quickstart { padding: 60px 0; border-bottom: 1px solid var(--border); }
+  .quickstart h2 { font-size: 22px; margin-bottom: 24px; }
+  .step { display: flex; gap: 16px; margin-bottom: 14px; }
+  .step-num {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--accent);
+    background: rgba(79,255,176,0.1); border-radius: 4px; padding: 2px 8px;
+    height: fit-content; white-space: nowrap; margin-top: 2px;
+  }
+  .step-text { font-size: 15px; color: var(--muted); }
+  .step-text code {
+    font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--text);
+    background: var(--surface); padding: 1px 6px; border-radius: 3px;
+  }
+
+  /* Related */
+  .related { padding: 48px 0; }
+  .related h2 { font-size: 16px; color: var(--muted); margin-bottom: 20px; }
+  .related-links { display: flex; gap: 20px; flex-wrap: wrap; }
+  .related-link {
+    font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--accent);
+    background: var(--surface); border: 1px solid var(--border);
+    padding: 8px 14px; border-radius: 6px;
+  }
+
+  footer {
+    border-top: 1px solid var(--border); padding: 24px 0;
+    font-size: 13px; color: var(--muted); display: flex; justify-content: center;
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="container">
+    <span class="nav-brand">local-ai-environment</span>
+    <div class="nav-links">
+      <a href="https://github.com/pawellach/local-ai-environment">GitHub</a>
+      <a href="https://github.com/pawellach/pm-ai-prompts">pm-ai-prompts</a>
+      <a href="https://medium.com/@pawellach">Writing</a>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <section class="hero">
+    <div class="container">
+      <div class="hero-label">Open Source · PowerShell · Windows 11 · AI Stack</div>
+      <h1>Your AI stack.<br>Your machine.<br>No cloud required.</h1>
+      <p class="hero-sub">A modular PowerShell toolkit that installs Ollama + Open-WebUI on Windows 11 in one script run. Privacy-first, fully offline, OpenAI-compatible API included.</p>
+      <div class="cta-group">
+        <a class="btn-primary" href="https://github.com/pawellach/local-ai-environment">View on GitHub</a>
+        <a class="btn-secondary" href="https://github.com/pawellach/local-ai-environment/blob/main/docs/ARCHITECTURE.md">Architecture</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="stack-section">
+    <div class="container">
+      <div class="section-label">The stack</div>
+      <div class="terminal">
+        <span class="comment"># What you get after running the scripts</span><br><br>
+        <span class="hi">Windows 11</span><br>
+        <span class="dim">  └─ </span><span class="ok">Python 3.11+</span><br>
+        <span class="dim">       └─ </span><span class="ok">Open-WebUI</span>  <span class="comment">http://localhost:3000</span><br>
+        <span class="dim">            │   </span><span class="comment">ChatGPT-like UI + OpenAI-compatible REST API</span><br>
+        <span class="dim">            └─ </span><span class="ok">Ollama</span>  <span class="comment">http://localhost:11434</span><br>
+        <span class="dim">                 │   </span><span class="comment">LLM runtime + model manager</span><br>
+        <span class="dim">                 └─ </span><span class="ok">Local LLM</span>  <span class="comment">e.g. qwen2.5:7b, mistral, llama3.2</span><br>
+        <span class="dim">                      </span><span class="comment">stored locally — no network calls during inference</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="phases">
+    <div class="container">
+      <h2>Phases</h2>
+      <div class="phase-grid">
+        <div class="phase-card done">
+          <span class="phase-badge badge-done">Phase 1 — Done</span>
+          <h3>Local AI stack</h3>
+          <ul>
+            <li>Docker audit + cleanup</li>
+            <li>Ollama install + model download</li>
+            <li>Open-WebUI install + configure</li>
+            <li>Environment validation</li>
+            <li>HTML health report</li>
+          </ul>
+        </div>
+        <div class="phase-card">
+          <span class="phase-badge badge-next">Phase 2 — Planned</span>
+          <h3>Workflow automation</h3>
+          <ul>
+            <li>n8n workflow engine</li>
+            <li>Docker Compose stack</li>
+            <li>AI ↔ calendar / email hooks</li>
+            <li>MCP server integration</li>
+            <li>Scheduled pipelines</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="scripts">
+    <div class="container">
+      <div class="section-label">Scripts</div>
+      <div class="script-list">
+        <div class="script-row">
+          <span class="script-name">00-System-Check</span>
+          <span class="script-desc">Pre-flight — CPU, RAM, disk, WSL, Python version check</span>
+        </div>
+        <div class="script-row">
+          <span class="script-name">01-Docker-Audit</span>
+          <span class="script-desc">Full inventory of running containers, images, volumes — JSON report</span>
+        </div>
+        <div class="script-row">
+          <span class="script-name">02-Docker-Clean</span>
+          <span class="script-desc">Remove dangling images, stopped containers, unused volumes</span>
+        </div>
+        <div class="script-row">
+          <span class="script-name">03-Install-OpenWebUI</span>
+          <span class="script-desc">pip install open-webui, create startup scripts, configure port</span>
+        </div>
+        <div class="script-row">
+          <span class="script-name">06-Configure-OpenWebUI</span>
+          <span class="script-desc">Point Open-WebUI at Ollama, set model defaults, disable telemetry</span>
+        </div>
+        <div class="script-row">
+          <span class="script-name">07-Validate-Environment</span>
+          <span class="script-desc">End-to-end health check — API ping, model list, UI reachability</span>
+        </div>
+        <div class="script-row">
+          <span class="script-name">99-Generate-Report</span>
+          <span class="script-desc">HTML summary report with stack status, versions, memory usage</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="quickstart">
+    <div class="container">
+      <h2>Quick start</h2>
+      <div class="step">
+        <span class="step-num">01</span>
+        <span class="step-text">Clone the repo and open PowerShell as Administrator</span>
+      </div>
+      <div class="step">
+        <span class="step-num">02</span>
+        <span class="step-text">Run <code>00-System-Check.ps1</code> — confirms prerequisites are met</span>
+      </div>
+      <div class="step">
+        <span class="step-num">03</span>
+        <span class="step-text">Run <code>03-Install-OpenWebUI.ps1</code> — installs Open-WebUI via pip</span>
+      </div>
+      <div class="step">
+        <span class="step-num">04</span>
+        <span class="step-text">Install Ollama from <code>ollama.com</code>, pull a model: <code>ollama pull qwen2.5:7b</code></span>
+      </div>
+      <div class="step">
+        <span class="step-num">05</span>
+        <span class="step-text">Run <code>06-Configure-OpenWebUI.ps1</code> and open <code>http://localhost:3000</code></span>
+      </div>
+    </div>
+  </section>
+
+  <section class="related">
+    <div class="container">
+      <h2>Related projects</h2>
+      <div class="related-links">
+        <a class="related-link" href="https://github.com/pawellach/pm-ai-prompts">pm-ai-prompts</a>
+        <a class="related-link" href="https://github.com/pawellach/portfolio-control-agent">portfolio-control-agent</a>
+        <a class="related-link" href="https://medium.com/@pawellach">medium.com/@pawellach</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <span>MIT License · <a href="https://github.com/pawellach/local-ai-environment">github.com/pawellach/local-ai-environment</a></span>
+</footer>
+
+</body>
+</html>
